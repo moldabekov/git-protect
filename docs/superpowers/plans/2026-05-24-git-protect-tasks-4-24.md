@@ -2528,14 +2528,8 @@ func checkSubmodule(e *submoduleEntry, relPath string) []Finding {
 	return findings
 }
 
-// truncate returns s truncated to at most maxLen runes.
-func truncate(s string, maxLen int) string {
-	runes := []rune(s)
-	if len(runes) <= maxLen {
-		return s
-	}
-	return string(runes[:maxLen]) + "..."
-}
+// NOTE: truncate() is defined in the first occurrence above in this file.
+// Do NOT redefine it here — same package, shared across modules.
 ```
 
 > The `parseGitConfig` function in `config.go` also needs to use `io.Reader`
@@ -4036,13 +4030,7 @@ func isIDChar(ch rune) bool {
 		(ch >= '0' && ch <= '9') || ch == '_'
 }
 
-// truncate returns s with a maximum length of n, appending "..." if truncated.
-func truncate(s string, n int) string {
-	if len(s) <= n {
-		return s
-	}
-	return s[:n] + "..."
-}
+// truncate is defined in submodules.go — reuse from there (same package)
 ```
 
 ### Step 4: Run tests to verify they pass
@@ -5782,12 +5770,12 @@ func DefaultEngine() *Engine {
 	e := NewEngine()
 
 	// Critical severity modules — registered first so they appear first in output.
-	// (Task 4) e.Register(NewHooksModule())
-	// (Task 5) e.Register(NewConfigModule())
-	// (Task 6) e.Register(NewConfigIncludeModule())
-	// (Task 7) e.Register(NewAttributesModule())
-	// (Task 8) e.Register(NewSubmodulesModule())
-	// (Task 9) e.Register(NewBareReposModule())
+	e.Register(NewHooksModule())
+	e.Register(NewConfigModule())
+	e.Register(NewConfigIncludeModule())
+	e.Register(NewAttributesModule())
+	e.Register(NewSubmodulesModule())
+	e.Register(NewBareReposModule())
 
 	// High severity modules.
 	e.Register(NewSymlinksModule())
@@ -7528,8 +7516,7 @@ import (
 	"github.com/moldabekov/git-protect/internal/scanner"
 	"github.com/moldabekov/git-protect/internal/trust"
 
-	// Detection modules
-	scannerImpl "github.com/moldabekov/git-protect/internal/scanner"
+	"github.com/moldabekov/git-protect/internal/scanner"
 )
 
 // version is set at build time via -ldflags.
@@ -7537,22 +7524,22 @@ var version = "dev"
 
 // ---- Module registration ----
 
-// allModules registers all 13 scanner modules with the given engine.
-// The order here determines the order findings appear in reports.
-func allModules(e *scannerImpl.Engine) {
-	e.Register(&scannerImpl.HooksModule{})
-	e.Register(&scannerImpl.ConfigModule{})
-	e.Register(&scannerImpl.ConfigIncludeModule{})
-	e.Register(&scannerImpl.AttributesModule{})
-	e.Register(&scannerImpl.SubmodulesModule{})
-	e.Register(&scannerImpl.SymlinksModule{})
-	e.Register(&scannerImpl.BareReposModule{})
-	e.Register(&scannerImpl.IDEConfigsModule{})
-	e.Register(&scannerImpl.DevEnvModule{})
-	e.Register(&scannerImpl.ScriptsModule{})
-	e.Register(&scannerImpl.BuildHooksModule{})
-	e.Register(&scannerImpl.UnicodeModule{})
-	e.Register(&scannerImpl.PipelinesModule{})
+// allModules registers all 13 scanner modules with the engine.
+// Uses factory functions (not struct literals) because Tasks 4-9 modules are unexported.
+func allModules(e *scanner.Engine) {
+	e.Register(scanner.NewHooksModule())
+	e.Register(scanner.NewConfigModule())
+	e.Register(scanner.NewConfigIncludeModule())
+	e.Register(scanner.NewAttributesModule())
+	e.Register(scanner.NewSubmodulesModule())
+	e.Register(scanner.NewBareReposModule())
+	e.Register(scanner.NewSymlinksModule())
+	e.Register(scanner.NewIDEConfigsModule())
+	e.Register(scanner.NewDevenvModule())
+	e.Register(scanner.NewScriptsModule())
+	e.Register(scanner.NewBuildHooksModule())
+	e.Register(scanner.NewUnicodeModule())
+	e.Register(scanner.NewPipelinesModule())
 }
 
 // ---- Severity parsing ----
@@ -8127,17 +8114,17 @@ func isTerminal(f *os.File) bool {
 // ---- trust command ----
 
 func buildTrustCmd() *cobra.Command {
-	trust := &cobra.Command{
+	trustCmd := &cobra.Command{
 		Use:   "trust",
 		Short: "Manage the repository trust/allowlist",
 	}
 
-	trust.AddCommand(buildTrustListCmd())
-	trust.AddCommand(buildTrustAddCmd())
-	trust.AddCommand(buildTrustRemoveCmd())
-	trust.AddCommand(buildTrustCheckCmd())
+	trustCmd.AddCommand(buildTrustListCmd())
+	trustCmd.AddCommand(buildTrustAddCmd())
+	trustCmd.AddCommand(buildTrustRemoveCmd())
+	trustCmd.AddCommand(buildTrustCheckCmd())
 
-	return trust
+	return trustCmd
 }
 
 func buildTrustListCmd() *cobra.Command {
@@ -8927,28 +8914,20 @@ If `golang.org/x/net` is unavailable or undesirable, the IDN normalization in `u
 
 ## Implementation Notes for Integration
 
-### Import path for scanner modules in `cmd/git-protect/main.go`
+### Module registration
 
-The `allModules()` function references concrete module types like `scannerImpl.HooksModule`. These must be exported structs implementing `scanner.Module` in the respective files:
-- `internal/scanner/hooks.go` exports `HooksModule`
-- `internal/scanner/config.go` exports `ConfigModule`
-- etc.
-
-If Tasks 4-14 used unexported module types or factory functions, adjust `allModules()` to use the actual constructor pattern. For example if Task 4 used `scanner.NewHooksModule()`, replace `&scannerImpl.HooksModule{}` with `scannerImpl.NewHooksModule()`.
+`allModules()` in `cmd/git-protect/main.go` uses factory functions (`scanner.NewHooksModule()`, etc.) — works regardless of whether struct types are exported or unexported.
 
 ### Trust store path helpers
 
-`paths.TrustStorePath()` and `paths.HooksDir()` are defined in `internal/paths/paths.go` (Task 1). The CLI commands import this package at `github.com/moldabekov/git-protect/internal/paths`.
+`paths.TrustStorePath()` and `paths.HooksDir()` are defined in `internal/paths/paths.go` (Task 1).
 
-### The `trust` package name collision in `cmd/git-protect/main.go`
+### Resolved compilation issues
 
-The `buildTrustCmd()` function creates a variable named `trust` (the cobra.Command) while importing the `trust` package. Rename either the variable or use an import alias. The complete main.go above avoids this by naming the trust subcommand variable differently. If the compiler complains, use:
-
-```go
-import trustpkg "github.com/moldabekov/git-protect/internal/trust"
-```
-
-and reference `trustpkg.NewStore(...)`, `trustpkg.Entry{...}`, `trustpkg.Normalize(...)`.
+- **Duplicate `truncate` function**: defined once in `submodules.go`, shared across the `scanner` package
+- **`trust` variable shadowing**: `buildTrustCmd()` uses `trustCmd` variable name to avoid shadowing the `trust` package import
+- **Scanner import**: single `"github.com/moldabekov/git-protect/internal/scanner"` import, no alias needed
+- **`maxScriptSize` constant**: defined in `scripts.go`, used by `unicode.go` and `pipelines.go` (same package)
 
 ### Coverage target
 
