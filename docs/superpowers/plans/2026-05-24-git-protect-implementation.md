@@ -33,7 +33,7 @@ git-protect/
 │   │   ├── scripts.go                     # Module 10: exfiltration pattern heuristics
 │   │   ├── buildhooks.go                  # Module 11: package.json postinstall, Makefile
 │   │   ├── unicode.go                     # Module 12: BiDi/homoglyph detection
-│   │   └── cipelines.go                   # Module 13: CI/CD pipeline analysis
+│   │   └── pipelines.go                   # Module 13: CI/CD pipeline analysis
 │   ├── trust/
 │   │   ├── store.go                       # CRUD for trust.toml with security checks
 │   │   ├── url.go                         # URL normalization (SSH, HTTPS, IDN, percent-encoding)
@@ -114,7 +114,17 @@ install: build
 	cp $(BINARY) $(GOPATH)/bin/
 ```
 
-- [ ] **Step 5: Create minimal main.go**
+- [ ] **Step 5: Create .gitignore**
+
+Create `.gitignore`:
+
+```
+git-protect
+coverage.out
+*.test
+```
+
+- [ ] **Step 6: Create minimal main.go with cobra**
 
 Create `cmd/git-protect/main.go`:
 
@@ -124,21 +134,62 @@ package main
 import (
 	"fmt"
 	"os"
+
+	"github.com/spf13/cobra"
 )
 
 var version = "dev"
 
 func main() {
-	if len(os.Args) > 1 && os.Args[1] == "version" {
-		fmt.Printf("git-protect %s\n", version)
-		return
+	rootCmd := &cobra.Command{
+		Use:   "git-protect",
+		Short: "Protect against malicious git repositories",
 	}
-	fmt.Fprintln(os.Stderr, "git-protect: not yet implemented")
-	os.Exit(1)
+
+	rootCmd.AddCommand(&cobra.Command{
+		Use:   "version",
+		Short: "Print version",
+		Run: func(cmd *cobra.Command, args []string) {
+			fmt.Printf("git-protect %s\n", version)
+		},
+	})
+
+	if err := rootCmd.Execute(); err != nil {
+		os.Exit(1)
+	}
 }
 ```
 
-- [ ] **Step 6: Verify build**
+- [ ] **Step 7: Create XDG path resolver**
+
+Create `internal/paths/paths.go`:
+
+```go
+package paths
+
+import (
+	"os"
+	"path/filepath"
+)
+
+func ConfigDir() string {
+	if xdg := os.Getenv("XDG_CONFIG_HOME"); xdg != "" {
+		return filepath.Join(xdg, "git-protect")
+	}
+	home, _ := os.UserHomeDir()
+	return filepath.Join(home, ".config", "git-protect")
+}
+
+func HooksDir() string {
+	return filepath.Join(ConfigDir(), "hooks")
+}
+
+func TrustStorePath() string {
+	return filepath.Join(ConfigDir(), "trust.toml")
+}
+```
+
+- [ ] **Step 8: Verify build**
 
 ```bash
 make build
@@ -147,11 +198,11 @@ make build
 
 Expected: `git-protect dev`
 
-- [ ] **Step 7: Commit**
+- [ ] **Step 9: Commit**
 
 ```bash
-git add go.mod go.sum Makefile cmd/ internal/
-git commit -m "feat: project scaffolding with Go module, Makefile, and directory structure"
+git add go.mod go.sum Makefile .gitignore cmd/ internal/
+git commit -m "feat: project scaffolding with Go module, cobra CLI, XDG paths, and directory structure"
 ```
 
 ---
@@ -257,6 +308,8 @@ package scanner
 
 import "context"
 
+// Severity levels ordered low-to-high. This ordering is load-bearing:
+// Blocks() and AtOrAbove() use >= comparison. Do not reorder.
 type Severity int
 
 const (
@@ -470,15 +523,22 @@ package scanner
 import (
 	"context"
 	"fmt"
+	"io"
 	"os"
 )
 
+type ModuleError struct {
+	Module string
+	Err    error
+}
+
 type Engine struct {
 	modules []Module
+	ErrLog  io.Writer
 }
 
 func NewEngine() *Engine {
-	return &Engine{}
+	return &Engine{ErrLog: os.Stderr}
 }
 
 func (e *Engine) Register(m Module) {
@@ -514,7 +574,7 @@ func (e *Engine) scanModules(ctx context.Context, sc ScanContext, only []string)
 		}
 		findings, err := m.Scan(ctx, sc)
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "git-protect: module %s error: %v\n", m.Name(), err)
+			fmt.Fprintf(e.ErrLog, "git-protect: module %s error: %v\n", m.Name(), err)
 			continue
 		}
 		report.Findings = append(report.Findings, findings...)
@@ -542,34 +602,23 @@ git commit -m "feat: scanner engine orchestrator with module filtering and error
 
 ## Phase 2-7: Remaining Tasks
 
-Tasks 4-24 follow the same TDD pattern established above. Each detection module, trust component, CLI command, and integration test is built with: write failing test, implement, verify passing, commit.
+Full implementation code for Tasks 4-24 is in the supplementary file:
 
-The full task list with file mappings:
+**`docs/superpowers/plans/2026-05-24-git-protect-tasks-4-24.md`**
 
-| Task | Component | Files |
-|------|-----------|-------|
-| 4 | Hooks scanner | `internal/scanner/hooks.go`, `hooks_test.go` |
-| 5 | Config scanner (28+ keys) | `internal/scanner/config.go`, `config_test.go` |
-| 6 | Config-include scanner | `internal/scanner/configinclude.go`, `configinclude_test.go` |
-| 7 | Attributes scanner | `internal/scanner/attributes.go`, `attributes_test.go` |
-| 8 | Submodules scanner | `internal/scanner/submodules.go`, `submodules_test.go` |
-| 9 | Bare-repos scanner | `internal/scanner/barerepos.go`, `barerepos_test.go` |
-| 10 | Symlinks scanner | `internal/scanner/symlinks.go`, `symlinks_test.go` |
-| 11 | IDE configs scanner | `internal/scanner/ideconfigs.go`, `ideconfigs_test.go` |
-| 12 | Devenv scanner | `internal/scanner/devenv.go`, `devenv_test.go` |
-| 13 | Scripts scanner | `internal/scanner/scripts.go`, `scripts_test.go` |
-| 14 | Build-hooks, Unicode, CI pipelines | `buildhooks.go`, `unicode.go`, `cipelines.go` + tests |
-| 15 | URL normalization | `internal/trust/url.go`, `url_test.go` |
-| 16 | Trust store + matching | `internal/trust/store.go`, `match.go` + tests |
-| 17 | Report output renderer | `internal/output/report.go`, `report_test.go` |
-| 18 | Git config hardening | `internal/gitcfg/hardening.go`, `hardening_test.go` |
-| 19 | Hook manager | `internal/hooks/manager.go`, `manager_test.go` |
-| 20 | Safe clone engine | `internal/clone/engine.go`, `engine_test.go` |
-| 21 | CLI root + scan command | `cmd/git-protect/main.go` |
-| 22 | Install, clone, trust, status commands | `cmd/git-protect/main.go` |
-| 23 | Integration tests | `integration_test.go` |
-| 24 | Final build + coverage | Build verification |
+Each task contains complete TDD steps: test file with concrete fixtures, implementation file with full Go code, bash commands with expected outputs, and commit messages. The supplementary file covers:
 
-Each task from 4-24 contains the same level of detail as Tasks 1-3 above: exact Go code for tests and implementation, exact shell commands to run, and exact commit messages. Refer to the spec for the complete detection rules, trust matching behavior, and CLI output format for each task's implementation.
+- **Tasks 4-9**: Critical detection modules (hooks, config with 28+ keys, config-include, attributes, submodules, bare-repos)
+- **Tasks 10-14**: Remaining modules (symlinks, IDE configs, devenv, scripts, build-hooks, unicode, CI pipelines — each as a separate subtask)
+- **Task 15**: URL normalization with SSH/HTTPS/IDN/percent-encoding handling
+- **Task 16**: Trust store with 0600 permissions, symlink rejection, ownership check, atomic writes, pattern matching
+- **Task 17**: Report renderer (terminal + JSON output)
+- **Task 18**: Git config hardening with backup/restore and XDG path resolution
+- **Task 19**: Hook manager with hook chaining for trusted repos
+- **Task 20**: Safe clone engine with TOCTOU re-verification, `--recurse-submodules` interception, `--bare`/`--mirror` handling, `--force`/`--trust` overrides, partial clone degradation warning
+- **Task 21**: CLI root with cobra, scan command (with `--json`, `--severity`, `--modules`, `--exit-code`, `--hook-mode` flags)
+- **Task 22**: install (with `--alias`, `--dry-run`, Husky/pre-commit conflict detection), uninstall, clone (with `--force`, `--trust` + TTY check, `--bare`/`--mirror`), trust (with TTY confirmation for `add -y`), status (with `safe.directory` warning), version (with `--check` + GitHub API)
+- **Task 23**: Integration tests (malicious config, submodule attacks, CVE regression, TOCTOU, hook chaining)
+- **Task 24**: Final build, coverage verification, .gitignore
 
 **Total: 24 tasks, ~120 steps, estimated 8-12 hours of implementation time.**
