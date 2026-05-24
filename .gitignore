@@ -1,3 +1,4 @@
 /git-protect
 coverage.out
 *.test
+test-repos/repos/
