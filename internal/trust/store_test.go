@@ -50,7 +50,7 @@ func TestStoreAddListRemove(t *testing.T) {
 		t.Errorf("pattern = %q, want %q", entries[0].Pattern, "github.com/myorg/*")
 	}
 
-	// Add duplicate — should be idempotent.
+	// Add duplicate – should be idempotent.
 	err = s.Add(trust.Entry{Pattern: "github.com/myorg/*", Type: "org"})
 	if err != nil {
 		t.Fatalf("Add duplicate: %v", err)

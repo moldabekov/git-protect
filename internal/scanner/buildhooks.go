@@ -38,20 +38,20 @@ var makefileShellRe = regexp.MustCompile(`\$\(shell\s`)
 
 // setupPyDangerousRe matches subprocess imports in setup.py.
 // The literal "subprocess" string appears in detector patterns and scanner output;
-// this regex is used only to scan untrusted repository files — not to invoke
+// this regex is used only to scan untrusted repository files – not to invoke
 // any shell functionality.
 var setupPyDangerousRe = regexp.MustCompile(`subprocess`)
 
 func (m *buildHooksModule) Scan(_ context.Context, sc ScanContext) ([]Finding, error) {
 	var findings []Finding
 
-	// package.json — npm lifecycle hooks.
+	// package.json – npm lifecycle hooks.
 	pkgJSON := filepath.Join(sc.RepoPath, "package.json")
 	if f, err := scanPackageJSON(pkgJSON, m.Name()); err == nil {
 		findings = append(findings, f...)
 	}
 
-	// Makefile — $(shell ...) invocations.
+	// Makefile – $(shell ...) invocations.
 	for _, name := range []string{"Makefile", "makefile", "GNUmakefile"} {
 		makePath := filepath.Join(sc.RepoPath, name)
 		if f, err := scanMakefile(makePath, m.Name()); err == nil {
@@ -60,7 +60,7 @@ func (m *buildHooksModule) Scan(_ context.Context, sc ScanContext) ([]Finding, e
 		}
 	}
 
-	// setup.py — subprocess / os.system calls.
+	// setup.py – subprocess / os.system calls.
 	setupPy := filepath.Join(sc.RepoPath, "setup.py")
 	if f, err := scanSetupPy(setupPy, m.Name()); err == nil {
 		findings = append(findings, f...)
@@ -166,7 +166,7 @@ func scanSetupPy(path, moduleName string) ([]Finding, error) {
 		Severity: Medium,
 		Module:   moduleName,
 		Path:     "setup.py",
-		Message: fmt.Sprintf("setup.py line %d: subprocess/shell call — %s",
+		Message: fmt.Sprintf("setup.py line %d: subprocess/shell call – %s",
 			matchLine, truncate(matchText, 80)),
 		Detail: "setup.py is executed by pip during 'pip install .' or " +
 			"'python setup.py install'. Shell command calls execute on the " +

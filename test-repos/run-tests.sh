@@ -80,7 +80,7 @@ for repo_path in "$REPO_DIR"/*/; do
         status="PASS"
         PASS=$((PASS + 1))
     else
-        # Detected but at different severity — still a detection
+        # Detected but at different severity – still a detection
         status="PASS (sev=$actual)"
         PASS=$((PASS + 1))
     fi
@@ -93,7 +93,7 @@ echo "=== Results: $PASS/$TOTAL passed, $FAIL failed ==="
 
 if [ "$FAIL" -gt 0 ]; then
     echo ""
-    echo "FAILED REPOS — detailed output:"
+    echo "FAILED REPOS – detailed output:"
     for repo_path in "$REPO_DIR"/*/; do
         repo_name=$(basename "$repo_path")
         expected="${EXPECTED[$repo_name]:-UNKNOWN}"

@@ -28,7 +28,7 @@ func TestUnicode_CleanFile(t *testing.T) {
 
 func TestUnicode_BiDiCharInGoFile(t *testing.T) {
 	dir := t.TempDir()
-	// U+202E (RIGHT-TO-LEFT OVERRIDE) — UTF-8: 0xE2 0x80 0xAE
+	// U+202E (RIGHT-TO-LEFT OVERRIDE) – UTF-8: 0xE2 0x80 0xAE
 	src := "package main\n\n// access check: \xe2\x80\xae bypass if admin\nfunc isAllowed() bool { return true }\n"
 	if err := os.WriteFile(filepath.Join(dir, "auth.go"), []byte(src), 0644); err != nil {
 		t.Fatal(err)
@@ -49,7 +49,7 @@ func TestUnicode_BiDiCharInGoFile(t *testing.T) {
 
 func TestUnicode_BiDiCharInPythonFile(t *testing.T) {
 	dir := t.TempDir()
-	// U+200F (RIGHT-TO-LEFT MARK) — UTF-8: 0xE2 0x80 0x8F
+	// U+200F (RIGHT-TO-LEFT MARK) – UTF-8: 0xE2 0x80 0x8F
 	src := "def check_admin(user):\n    # \xe2\x80\x8f admin check\n    return user == 'admin'\n"
 	if err := os.WriteFile(filepath.Join(dir, "auth.py"), []byte(src), 0644); err != nil {
 		t.Fatal(err)
@@ -67,7 +67,7 @@ func TestUnicode_BiDiCharInPythonFile(t *testing.T) {
 
 func TestUnicode_BiDiIsolate(t *testing.T) {
 	dir := t.TempDir()
-	// U+2066 (LEFT-TO-RIGHT ISOLATE) — UTF-8: 0xE2 0x81 0xA6
+	// U+2066 (LEFT-TO-RIGHT ISOLATE) – UTF-8: 0xE2 0x81 0xA6
 	src := "function validate(input) {\n  // \xe2\x81\xa6 safe check\n  return input.length > 0;\n}\n"
 	if err := os.WriteFile(filepath.Join(dir, "validate.js"), []byte(src), 0644); err != nil {
 		t.Fatal(err)
@@ -89,7 +89,7 @@ func TestUnicode_SkipsNodeModules(t *testing.T) {
 	if err := os.MkdirAll(nmDir, 0755); err != nil {
 		t.Fatal(err)
 	}
-	// U+202E inside node_modules — should be skipped.
+	// U+202E inside node_modules – should be skipped.
 	src := "// \xe2\x80\xae evil\nmodule.exports = {};\n"
 	if err := os.WriteFile(filepath.Join(nmDir, "index.js"), []byte(src), 0644); err != nil {
 		t.Fatal(err)
@@ -129,7 +129,7 @@ func TestUnicode_SkipsLargeFiles(t *testing.T) {
 
 func TestUnicode_NonSourceFileSkipped(t *testing.T) {
 	dir := t.TempDir()
-	// A Markdown file with a BiDi char — not in the scanned extension list.
+	// A Markdown file with a BiDi char – not in the scanned extension list.
 	content := "# README\nThis is \xe2\x80\xae safe.\n"
 	if err := os.WriteFile(filepath.Join(dir, "README.md"), []byte(content), 0644); err != nil {
 		t.Fatal(err)

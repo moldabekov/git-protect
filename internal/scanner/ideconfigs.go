@@ -11,7 +11,7 @@ import (
 )
 
 // ideConfigsModule detects IDE configuration files that auto-execute commands.
-// Severity: HIGH — actively weaponized in the Contagious Interview campaign (2025-2026).
+// Severity: HIGH – actively weaponized in the Contagious Interview campaign (2025-2026).
 type ideConfigsModule struct{}
 
 // NewIDEConfigsModule returns a Module that detects dangerous IDE configurations.
@@ -125,7 +125,7 @@ func scanVSCodeTasks(path string) ([]Finding, error) {
 				Severity: High,
 				Module:   "ide-configs",
 				Path:     ".vscode/tasks.json",
-				Message:  fmt.Sprintf("VS Code task %q has runOn:folderOpen — auto-executes on folder open", label),
+				Message:  fmt.Sprintf("VS Code task %q has runOn:folderOpen – auto-executes on folder open", label),
 				Detail:   "Tasks with runOn:folderOpen execute automatically when a developer opens the project in VS Code.",
 			})
 		}
@@ -154,7 +154,7 @@ func scanVSCodeSettings(path string) ([]Finding, error) {
 					Severity: High,
 					Module:   "ide-configs",
 					Path:     ".vscode/settings.json",
-					Message:  fmt.Sprintf("VS Code setting %q overrides tool path — can redirect to attacker-controlled binary", key),
+					Message:  fmt.Sprintf("VS Code setting %q overrides tool path – can redirect to attacker-controlled binary", key),
 					Detail:   "Repo-local VS Code settings can redirect the interpreter, shell, or tool used by extensions to an arbitrary binary.",
 				})
 				break
@@ -189,7 +189,7 @@ func scanIntelliJDir(ideaDir string) ([]Finding, error) {
 				Severity: High,
 				Module:   "ide-configs",
 				Path:     relPath,
-				Message:  fmt.Sprintf("JetBrains .idea/%s contains RunManager component — defines auto-run configurations", entry.Name()),
+				Message:  fmt.Sprintf("JetBrains .idea/%s contains RunManager component – defines auto-run configurations", entry.Name()),
 				Detail:   "JetBrains IDEs load run configurations from .idea/ workspace XML files automatically. Used in Contagious Interview campaign to execute malicious code on project open.",
 			})
 		}

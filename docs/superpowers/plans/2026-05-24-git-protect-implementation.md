@@ -20,7 +20,7 @@ git-protect/
 ├── internal/
 │   ├── scanner/
 │   │   ├── types.go                        # Severity, Finding, Report, Module interface
-│   │   ├── engine.go                       # Orchestrator — runs modules, aggregates results
+│   │   ├── engine.go                       # Orchestrator – runs modules, aggregates results
 │   │   ├── hooks.go                        # Module 1: .git/hooks/ executable scan
 │   │   ├── config.go                       # Module 2: .git/config dangerous directives
 │   │   ├── configinclude.go               # Module 3: include/includeIf resolution
@@ -609,7 +609,7 @@ Full implementation code for Tasks 4-24 is in the supplementary file:
 Each task contains complete TDD steps: test file with concrete fixtures, implementation file with full Go code, bash commands with expected outputs, and commit messages. The supplementary file covers:
 
 - **Tasks 4-9**: Critical detection modules (hooks, config with 28+ keys, config-include, attributes, submodules, bare-repos)
-- **Tasks 10-14**: Remaining modules (symlinks, IDE configs, devenv, scripts, build-hooks, unicode, CI pipelines — each as a separate subtask)
+- **Tasks 10-14**: Remaining modules (symlinks, IDE configs, devenv, scripts, build-hooks, unicode, CI pipelines – each as a separate subtask)
 - **Task 15**: URL normalization with SSH/HTTPS/IDN/percent-encoding handling
 - **Task 16**: Trust store with 0600 permissions, symlink rejection, ownership check, atomic writes, pattern matching
 - **Task 17**: Report renderer (terminal + JSON output)

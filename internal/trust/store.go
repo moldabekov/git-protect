@@ -48,10 +48,10 @@ func (s *Store) Load() ([]Entry, error) {
 		return nil, fmt.Errorf("trust store stat: %w", err)
 	}
 	if info.Mode()&os.ModeSymlink != 0 {
-		return nil, fmt.Errorf("trust store %q is a symlink — refusing to load (security policy)", s.path)
+		return nil, fmt.Errorf("trust store %q is a symlink – refusing to load (security policy)", s.path)
 	}
 	if info.Mode().Perm() != 0600 {
-		return nil, fmt.Errorf("trust store %q has unsafe permissions %04o — expected 0600", s.path, info.Mode().Perm())
+		return nil, fmt.Errorf("trust store %q has unsafe permissions %04o – expected 0600", s.path, info.Mode().Perm())
 	}
 
 	data, err := os.ReadFile(s.path)

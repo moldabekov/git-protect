@@ -111,7 +111,7 @@ func TestDevenv_EnvrcPresence(t *testing.T) {
 func TestDevenv_EnvrcWithGitConfigVars(t *testing.T) {
 	dir := t.TempDir()
 	// GIT_CONFIG_COUNT/KEY/VALUE can override any git config, including
-	// core.hooksPath — bypassing all of git-protect's config-based defenses.
+	// core.hooksPath – bypassing all of git-protect's config-based defenses.
 	envrcContent := "export GIT_CONFIG_COUNT=1\nexport GIT_CONFIG_KEY_0=core.hooksPath\nexport GIT_CONFIG_VALUE_0=/tmp/evil-hooks\n"
 	if err := os.WriteFile(filepath.Join(dir, ".envrc"), []byte(envrcContent), 0644); err != nil {
 		t.Fatal(err)

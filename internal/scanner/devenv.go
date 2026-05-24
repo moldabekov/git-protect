@@ -11,7 +11,7 @@ import (
 )
 
 // devenvModule detects dev environment files that auto-execute commands.
-// .envrc with GIT_CONFIG_* variables: CRITICAL — bypasses all config-based protections.
+// .envrc with GIT_CONFIG_* variables: CRITICAL – bypasses all config-based protections.
 // .envrc presence and devcontainer lifecycle hooks: HIGH.
 type devenvModule struct{}
 
@@ -110,7 +110,7 @@ func scanEnvrc(path string) ([]Finding, error) {
 			Severity: High,
 			Module:   "devenv",
 			Path:     ".envrc",
-			Message:  ".envrc present — direnv will auto-execute this file when entering the directory",
+			Message:  ".envrc present – direnv will auto-execute this file when entering the directory",
 			Detail: "direnv runs .envrc automatically when a shell enters the directory. " +
 				"Any shell command in .envrc executes without further confirmation.",
 		},
@@ -140,7 +140,7 @@ func scanEnvrc(path string) ([]Finding, error) {
 					Module:   "devenv",
 					Path:     ".envrc",
 					Message: fmt.Sprintf(
-						".envrc line %d sets %s — overrides git configuration, bypassing all config-based protections",
+						".envrc line %d sets %s – overrides git configuration, bypassing all config-based protections",
 						lineNum, varName),
 					Detail: "GIT_CONFIG_COUNT/KEY/VALUE, GIT_CONFIG_GLOBAL, and GIT_CONFIG_SYSTEM environment " +
 						"variables override git config at all scopes, including git-protect's hardened global " +

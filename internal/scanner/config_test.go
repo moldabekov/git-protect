@@ -367,7 +367,7 @@ func TestConfigScanner_MultipleKeys_AllReported(t *testing.T) {
 
 func TestConfigScanner_MissingConfigFile_NoError(t *testing.T) {
 	repo := makeRepo(t)
-	// No .git/config written — scanner must return cleanly.
+	// No .git/config written – scanner must return cleanly.
 	m := scanner.NewConfigModule()
 	findings, err := m.Scan(context.Background(), scanner.ScanContext{RepoPath: repo})
 	if err != nil {

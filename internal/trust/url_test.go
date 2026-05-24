@@ -83,7 +83,7 @@ func TestNormalize(t *testing.T) {
 			want:   "github.com/org/repo",
 			wantOK: true,
 		},
-		// Local paths — must return false
+		// Local paths – must return false
 		{
 			name:   "file:// scheme",
 			input:  "file:///home/user/repo",

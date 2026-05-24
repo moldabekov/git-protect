@@ -29,7 +29,7 @@ type ScanFunc func(ctx context.Context, repoPath string, preCheckout bool) (scan
 func BuildCloneArgs(url, dir string, extraArgs []string) []string {
 	args := []string{"clone", "--no-checkout"}
 	for _, a := range extraArgs {
-		// Strip submodule recursion — git-protect handles it separately
+		// Strip submodule recursion – git-protect handles it separately
 		if a == "--recurse-submodules" || strings.HasPrefix(a, "--recurse-submodules=") {
 			continue
 		}

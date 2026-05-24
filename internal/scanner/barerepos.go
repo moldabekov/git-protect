@@ -45,7 +45,7 @@ func (b *bareReposModule) Scan(_ context.Context, sc ScanContext) ([]Finding, er
 		if path == rootGit {
 			return filepath.SkipDir
 		}
-		// This is an embedded .git directory — flag it.
+		// This is an embedded .git directory – flag it.
 		relPath, relErr := filepath.Rel(sc.RepoPath, path)
 		if relErr != nil {
 			relPath = path

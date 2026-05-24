@@ -1,4 +1,4 @@
-# git-protect: Tasks 4-9 — Critical Detection Scanner Modules
+# git-protect: Tasks 4-9 – Critical Detection Scanner Modules
 
 Complete TDD implementation for the six critical scanner modules. Each task follows
 the Red-Green-Commit cycle: test file (fails), implementation file (passes), commit.
@@ -109,7 +109,7 @@ func assertSeverity(t *testing.T, findings []Finding, msgSubstr string, want Sev
 > `"github.com/moldabekov/git-protect/internal/scanner"` and calls
 > `scanner.Finding`, etc. Update `testhelper_test.go` to use the qualified forms:
 
-**File: `internal/scanner/testhelper_test.go`** (final — with qualified types)
+**File: `internal/scanner/testhelper_test.go`** (final – with qualified types)
 
 ```go
 package scanner_test
@@ -206,7 +206,7 @@ func assertSeverity(t *testing.T, findings []scanner.Finding, msgSubstr string, 
 
 ---
 
-### Step 1 — Write the test
+### Step 1 – Write the test
 
 **File: `internal/scanner/hooks_test.go`**
 
@@ -332,7 +332,7 @@ func TestHooksScanner_MissingHooksDir_NoError(t *testing.T) {
 }
 ```
 
-### Step 2 — Run test (expect FAIL)
+### Step 2 – Run test (expect FAIL)
 
 ```bash
 cd /home/moldabekov/Work/Projects/git/git-protect
@@ -345,7 +345,7 @@ Expected output (compilation failure because `NewHooksModule` is not yet defined
 FAIL    github.com/moldabekov/git-protect/internal/scanner [build failed]
 ```
 
-### Step 3 — Write the implementation
+### Step 3 – Write the implementation
 
 **File: `internal/scanner/hooks.go`**
 
@@ -361,7 +361,7 @@ import (
 )
 
 // hooksModule scans .git/hooks/ for executable files that are not .sample stubs.
-// Any executable hook in a freshly cloned repo is suspicious — git does not
+// Any executable hook in a freshly cloned repo is suspicious – git does not
 // install executable hooks from a remote; they come only from init.templateDir.
 type hooksModule struct{}
 
@@ -417,7 +417,7 @@ func (h *hooksModule) Scan(_ context.Context, sc ScanContext) ([]Finding, error)
 }
 ```
 
-### Step 4 — Run test (expect PASS)
+### Step 4 – Run test (expect PASS)
 
 ```bash
 cd /home/moldabekov/Work/Projects/git/git-protect
@@ -441,7 +441,7 @@ Expected output:
 PASS
 ```
 
-### Step 5 — Commit
+### Step 5 – Commit
 
 ```bash
 cd /home/moldabekov/Work/Projects/git/git-protect
@@ -462,7 +462,7 @@ that cause git to execute arbitrary commands.
 
 ---
 
-### Step 1 — Write the test
+### Step 1 – Write the test
 
 **File: `internal/scanner/config_test.go`**
 
@@ -836,7 +836,7 @@ func TestConfigScanner_MultipleKeys_AllReported(t *testing.T) {
 
 func TestConfigScanner_MissingConfigFile_NoError(t *testing.T) {
 	repo := makeRepo(t)
-	// No .git/config written — scanner must return cleanly.
+	// No .git/config written – scanner must return cleanly.
 	m := scanner.NewConfigModule()
 	findings, err := m.Scan(context.Background(), scanner.ScanContext{RepoPath: repo})
 	if err != nil {
@@ -860,7 +860,7 @@ func TestConfigScanner_ConfigPath(t *testing.T) {
 }
 ```
 
-### Step 2 — Run test (expect FAIL)
+### Step 2 – Run test (expect FAIL)
 
 ```bash
 cd /home/moldabekov/Work/Projects/git/git-protect
@@ -873,7 +873,7 @@ Expected output:
 FAIL    github.com/moldabekov/git-protect/internal/scanner [build failed]
 ```
 
-### Step 3 — Write the implementation
+### Step 3 – Write the implementation
 
 **File: `internal/scanner/config.go`**
 
@@ -1177,7 +1177,7 @@ func isDisabled(v string) bool {
 }
 ```
 
-### Step 4 — Run test (expect PASS)
+### Step 4 – Run test (expect PASS)
 
 ```bash
 cd /home/moldabekov/Work/Projects/git/git-protect
@@ -1263,7 +1263,7 @@ Expected output:
 PASS
 ```
 
-### Step 5 — Commit
+### Step 5 – Commit
 
 ```bash
 cd /home/moldabekov/Work/Projects/git/git-protect
@@ -1281,7 +1281,7 @@ git commit -m "feat: config scanner -- detect 28+ dangerous .git/config directiv
 
 ---
 
-### Step 1 — Write the test
+### Step 1 – Write the test
 
 **File: `internal/scanner/configinclude_test.go`**
 
@@ -1435,7 +1435,7 @@ func TestConfigInclude_ModuleName(t *testing.T) {
 }
 ```
 
-### Step 2 — Run test (expect FAIL)
+### Step 2 – Run test (expect FAIL)
 
 ```bash
 cd /home/moldabekov/Work/Projects/git/git-protect
@@ -1448,7 +1448,7 @@ Expected output:
 FAIL    github.com/moldabekov/git-protect/internal/scanner [build failed]
 ```
 
-### Step 3 — Write the implementation
+### Step 3 – Write the implementation
 
 **File: `internal/scanner/configinclude.go`**
 
@@ -1563,7 +1563,7 @@ func extractSubsection(header string) string {
 }
 ```
 
-### Step 4 — Run test (expect PASS)
+### Step 4 – Run test (expect PASS)
 
 ```bash
 cd /home/moldabekov/Work/Projects/git/git-protect
@@ -1591,7 +1591,7 @@ Expected output:
 PASS
 ```
 
-### Step 5 — Commit
+### Step 5 – Commit
 
 ```bash
 cd /home/moldabekov/Work/Projects/git/git-protect
@@ -1609,7 +1609,7 @@ git commit -m "feat: config-include scanner -- detect include.path and includeIf
 
 ---
 
-### Step 1 — Write the test
+### Step 1 – Write the test
 
 **File: `internal/scanner/attributes_test.go`**
 
@@ -1786,7 +1786,7 @@ func TestAttributesScanner_ModuleName(t *testing.T) {
 }
 ```
 
-### Step 2 — Run test (expect FAIL)
+### Step 2 – Run test (expect FAIL)
 
 ```bash
 cd /home/moldabekov/Work/Projects/git/git-protect
@@ -1799,7 +1799,7 @@ Expected output:
 FAIL    github.com/moldabekov/git-protect/internal/scanner [build failed]
 ```
 
-### Step 3 — Write the implementation
+### Step 3 – Write the implementation
 
 **File: `internal/scanner/attributes.go`**
 
@@ -1931,7 +1931,7 @@ func describeAttrRisk(attrType, driver string) string {
 }
 ```
 
-### Step 4 — Run test (expect PASS)
+### Step 4 – Run test (expect PASS)
 
 ```bash
 cd /home/moldabekov/Work/Projects/git/git-protect
@@ -1967,7 +1967,7 @@ Expected output:
 PASS
 ```
 
-### Step 5 — Commit
+### Step 5 – Commit
 
 ```bash
 cd /home/moldabekov/Work/Projects/git/git-protect
@@ -1985,7 +1985,7 @@ git commit -m "feat: attributes scanner -- detect custom filter/diff/merge drive
 
 ---
 
-### Step 1 — Write the test
+### Step 1 – Write the test
 
 **File: `internal/scanner/submodules_test.go`**
 
@@ -2180,7 +2180,7 @@ func TestSubmodulesScanner_ModuleName(t *testing.T) {
 }
 ```
 
-### Step 2 — Run test (expect FAIL)
+### Step 2 – Run test (expect FAIL)
 
 ```bash
 cd /home/moldabekov/Work/Projects/git/git-protect
@@ -2193,7 +2193,7 @@ Expected output:
 FAIL    github.com/moldabekov/git-protect/internal/scanner [build failed]
 ```
 
-### Step 3 — Write the implementation
+### Step 3 – Write the implementation
 
 **File: `internal/scanner/submodules.go`**
 
@@ -2314,7 +2314,7 @@ func parseGitmodules(f interface {
 func checkSubmodule(e *submoduleEntry, relPath string) []Finding {
 	var findings []Finding
 
-	// 1. ext:: protocol URL — arbitrary shell command execution.
+	// 1. ext:: protocol URL – arbitrary shell command execution.
 	if strings.HasPrefix(e.url, "ext::") {
 		findings = append(findings, Finding{
 			Severity: Critical,
@@ -2374,7 +2374,7 @@ func truncate(s string, maxLen int) string {
 > (or any `io.Reader`) without importing `io`. However the double type assertion
 > in the scanner body is verbose. Prefer importing `io` and using `io.Reader`:
 
-**File: `internal/scanner/submodules.go`** (clean version — use io.Reader)
+**File: `internal/scanner/submodules.go`** (clean version – use io.Reader)
 
 ```go
 package scanner
@@ -2483,7 +2483,7 @@ func parseGitmodules(r io.Reader, relPath string) ([]Finding, error) {
 func checkSubmodule(e *submoduleEntry, relPath string) []Finding {
 	var findings []Finding
 
-	// 1. ext:: protocol URL — arbitrary shell command execution via git-remote-ext.
+	// 1. ext:: protocol URL – arbitrary shell command execution via git-remote-ext.
 	if strings.HasPrefix(e.url, "ext::") {
 		findings = append(findings, Finding{
 			Severity: Critical,
@@ -2529,7 +2529,7 @@ func checkSubmodule(e *submoduleEntry, relPath string) []Finding {
 }
 
 // NOTE: truncate() is defined in the first occurrence above in this file.
-// Do NOT redefine it here — same package, shared across modules.
+// Do NOT redefine it here – same package, shared across modules.
 ```
 
 > The `parseGitConfig` function in `config.go` also needs to use `io.Reader`
@@ -2538,7 +2538,7 @@ func checkSubmodule(e *submoduleEntry, relPath string) []Finding {
 > the imports. The call site in `config.go`'s `Scan` method passes `f` which is
 > `*os.File`, satisfying `io.Reader`.
 
-### Step 4 — Run test (expect PASS)
+### Step 4 – Run test (expect PASS)
 
 ```bash
 cd /home/moldabekov/Work/Projects/git/git-protect
@@ -2575,7 +2575,7 @@ Expected output:
 PASS
 ```
 
-### Step 5 — Commit
+### Step 5 – Commit
 
 ```bash
 cd /home/moldabekov/Work/Projects/git/git-protect
@@ -2593,7 +2593,7 @@ git commit -m "feat: submodules scanner -- detect ext:: URLs, path traversal, CR
 
 ---
 
-### Step 1 — Write the test
+### Step 1 – Write the test
 
 **File: `internal/scanner/barerepos_test.go`**
 
@@ -2752,7 +2752,7 @@ func TestBareRepos_ModuleName(t *testing.T) {
 }
 ```
 
-### Step 2 — Run test (expect FAIL)
+### Step 2 – Run test (expect FAIL)
 
 ```bash
 cd /home/moldabekov/Work/Projects/git/git-protect
@@ -2765,7 +2765,7 @@ Expected output:
 FAIL    github.com/moldabekov/git-protect/internal/scanner [build failed]
 ```
 
-### Step 3 — Write the implementation
+### Step 3 – Write the implementation
 
 **File: `internal/scanner/barerepos.go`**
 
@@ -2817,7 +2817,7 @@ func (b *bareReposModule) Scan(_ context.Context, sc ScanContext) ([]Finding, er
 		if path == rootGit {
 			return filepath.SkipDir
 		}
-		// This is an embedded .git directory — flag it.
+		// This is an embedded .git directory – flag it.
 		relPath, relErr := filepath.Rel(sc.RepoPath, path)
 		if relErr != nil {
 			relPath = path
@@ -2848,7 +2848,7 @@ func isGitDirName(name string) bool {
 }
 ```
 
-### Step 4 — Run test (expect PASS)
+### Step 4 – Run test (expect PASS)
 
 ```bash
 cd /home/moldabekov/Work/Projects/git/git-protect
@@ -2878,7 +2878,7 @@ Expected output:
 PASS
 ```
 
-### Step 5 — Commit
+### Step 5 – Commit
 
 ```bash
 cd /home/moldabekov/Work/Projects/git/git-protect
@@ -2934,7 +2934,7 @@ import blocks.
 If the agent encounters a "declared and not used" or "redeclared in this block"
 compile error, it is because a helper was defined in two files. Move it to the
 file where it is most logically cohesive and remove the duplicate.
-# git-protect: Tasks 10-14 — Detection Scanner Modules
+# git-protect: Tasks 10-14 – Detection Scanner Modules
 
 Complete Go implementation for the remaining detection scanner modules: symlinks, IDE configs,
 devenv, scripts, build-hooks, unicode, and CI pipelines.
@@ -3056,7 +3056,7 @@ cd /home/moldabekov/Work/Projects/git/git-protect
 go test ./internal/scanner/ -run TestSymlinks -v 2>&1 | head -20
 ```
 
-Expected: compilation error — `NewSymlinksModule` not defined.
+Expected: compilation error – `NewSymlinksModule` not defined.
 
 ### Step 3: Implement the symlinks scanner
 
@@ -3075,7 +3075,7 @@ import (
 )
 
 // SymlinksModule detects symlinks whose resolved target escapes the repository tree.
-// Severity: HIGH — can expose sensitive host files when the repo is opened in an IDE
+// Severity: HIGH – can expose sensitive host files when the repo is opened in an IDE
 // or archive tool that follows symlinks transparently.
 type SymlinksModule struct{}
 
@@ -3107,7 +3107,7 @@ func (m *SymlinksModule) Scan(_ context.Context, sc ScanContext) ([]Finding, err
 			return nil
 		}
 
-		// Skip the .git directory entirely — git manages its own internals.
+		// Skip the .git directory entirely – git manages its own internals.
 		if d.IsDir() && d.Name() == ".git" {
 			return filepath.SkipDir
 		}
@@ -3119,7 +3119,7 @@ func (m *SymlinksModule) Scan(_ context.Context, sc ScanContext) ([]Finding, err
 
 		resolved, resolveErr := filepath.EvalSymlinks(path)
 		if resolveErr != nil {
-			// Broken symlink — read the raw link target and check it lexically.
+			// Broken symlink – read the raw link target and check it lexically.
 			rawTarget, linkErr := os.Readlink(path)
 			if linkErr != nil {
 				return nil // Cannot inspect; skip.
@@ -3197,9 +3197,9 @@ git commit -m "feat: symlinks scanner -- detect symlinks escaping repo tree (HIG
 Detects IDE configuration files that auto-execute code on project open. Severity: HIGH.
 
 Attack surfaces:
-- `.vscode/tasks.json` with `"runOn": "folderOpen"` — task auto-runs when VS Code opens the folder
-- `.vscode/settings.json` with dangerous keys (`git.path`, `python.pythonPath`, `terminal.integrated.shell.*`, `python.defaultInterpreterPath`, `eslint.nodePath`, `prettier.prettierPath`) — overrides interpreters/tools used by extensions
-- `.idea/` workspace XML files containing a `RunManager` component — JetBrains auto-run configurations (actively used in Contagious Interview campaign 2025-2026)
+- `.vscode/tasks.json` with `"runOn": "folderOpen"` – task auto-runs when VS Code opens the folder
+- `.vscode/settings.json` with dangerous keys (`git.path`, `python.pythonPath`, `terminal.integrated.shell.*`, `python.defaultInterpreterPath`, `eslint.nodePath`, `prettier.prettierPath`) – overrides interpreters/tools used by extensions
+- `.idea/` workspace XML files containing a `RunManager` component – JetBrains auto-run configurations (actively used in Contagious Interview campaign 2025-2026)
 
 ### Step 1: Write the test file first
 
@@ -3418,7 +3418,7 @@ cd /home/moldabekov/Work/Projects/git/git-protect
 go test ./internal/scanner/ -run TestIDEConfigs -v 2>&1 | head -20
 ```
 
-Expected: compilation error — `NewIDEConfigsModule` not defined.
+Expected: compilation error – `NewIDEConfigsModule` not defined.
 
 ### Step 3: Implement the IDE configs scanner
 
@@ -3438,7 +3438,7 @@ import (
 )
 
 // IDEConfigsModule detects IDE configuration files that auto-execute commands.
-// Severity: HIGH — actively weaponized in the Contagious Interview campaign (2025-2026).
+// Severity: HIGH – actively weaponized in the Contagious Interview campaign (2025-2026).
 type IDEConfigsModule struct{}
 
 // NewIDEConfigsModule returns a new IDEConfigsModule.
@@ -3553,7 +3553,7 @@ func scanVSCodeTasks(path string) ([]Finding, error) {
 				Severity: High,
 				Module:   "ide-configs",
 				Path:     ".vscode/tasks.json",
-				Message:  fmt.Sprintf("VS Code task %q has runOn:folderOpen — auto-executes on folder open", label),
+				Message:  fmt.Sprintf("VS Code task %q has runOn:folderOpen – auto-executes on folder open", label),
 				Detail:   "Tasks with runOn:folderOpen execute automatically when a developer opens the project in VS Code.",
 			})
 		}
@@ -3582,7 +3582,7 @@ func scanVSCodeSettings(path string) ([]Finding, error) {
 					Severity: High,
 					Module:   "ide-configs",
 					Path:     ".vscode/settings.json",
-					Message:  fmt.Sprintf("VS Code setting %q overrides tool path — can redirect to attacker-controlled binary", key),
+					Message:  fmt.Sprintf("VS Code setting %q overrides tool path – can redirect to attacker-controlled binary", key),
 					Detail:   "Repo-local VS Code settings can redirect the interpreter, shell, or tool used by extensions to an arbitrary binary.",
 				})
 				break
@@ -3617,7 +3617,7 @@ func scanIntelliJDir(ideaDir string) ([]Finding, error) {
 				Severity: High,
 				Module:   "ide-configs",
 				Path:     relPath,
-				Message:  fmt.Sprintf("JetBrains .idea/%s contains RunManager component — defines auto-run configurations", entry.Name()),
+				Message:  fmt.Sprintf("JetBrains .idea/%s contains RunManager component – defines auto-run configurations", entry.Name()),
 				Detail:   "JetBrains IDEs load run configurations from .idea/ workspace XML files automatically. Used in Contagious Interview campaign to execute malicious code on project open.",
 			})
 		}
@@ -3653,9 +3653,9 @@ git commit -m "feat: ide-configs scanner -- detect VS Code folderOpen tasks, dan
 Detects dev environment files that auto-execute on clone or directory entry.
 
 Severity:
-- `.devcontainer/devcontainer.json` lifecycle hooks (`postCreateCommand`, `postStartCommand`, `postAttachCommand`, `onCreateCommand`, `updateContentCommand`) — HIGH
-- `.envrc` presence — HIGH
-- `.envrc` with `GIT_CONFIG_*` variables — CRITICAL (bypasses all config-based protections)
+- `.devcontainer/devcontainer.json` lifecycle hooks (`postCreateCommand`, `postStartCommand`, `postAttachCommand`, `onCreateCommand`, `updateContentCommand`) – HIGH
+- `.envrc` presence – HIGH
+- `.envrc` with `GIT_CONFIG_*` variables – CRITICAL (bypasses all config-based protections)
 
 ### Step 1: Write the test file first
 
@@ -3775,7 +3775,7 @@ func TestDevenv_EnvrcPresence(t *testing.T) {
 func TestDevenv_EnvrcWithGitConfigVars(t *testing.T) {
 	dir := t.TempDir()
 	// GIT_CONFIG_COUNT/KEY/VALUE can override any git config, including
-	// core.hooksPath — bypassing all of git-protect's config-based defenses.
+	// core.hooksPath – bypassing all of git-protect's config-based defenses.
 	envrcContent := "export GIT_CONFIG_COUNT=1\nexport GIT_CONFIG_KEY_0=core.hooksPath\nexport GIT_CONFIG_VALUE_0=/tmp/evil-hooks\n"
 	if err := os.WriteFile(filepath.Join(dir, ".envrc"), []byte(envrcContent), 0644); err != nil {
 		t.Fatal(err)
@@ -3838,7 +3838,7 @@ cd /home/moldabekov/Work/Projects/git/git-protect
 go test ./internal/scanner/ -run TestDevenv -v 2>&1 | head -20
 ```
 
-Expected: compilation error — `NewDevenvModule` not defined.
+Expected: compilation error – `NewDevenvModule` not defined.
 
 ### Step 3: Implement the devenv scanner
 
@@ -3858,7 +3858,7 @@ import (
 )
 
 // DevenvModule detects dev environment files that auto-execute commands.
-// .envrc with GIT_CONFIG_* variables: CRITICAL — bypasses all config-based protections.
+// .envrc with GIT_CONFIG_* variables: CRITICAL – bypasses all config-based protections.
 // .envrc presence and devcontainer lifecycle hooks: HIGH.
 type DevenvModule struct{}
 
@@ -3960,7 +3960,7 @@ func scanEnvrc(path string) ([]Finding, error) {
 		Severity: High,
 		Module:   "devenv",
 		Path:     ".envrc",
-		Message:  ".envrc present — direnv will auto-execute this file when entering the directory",
+		Message:  ".envrc present – direnv will auto-execute this file when entering the directory",
 		Detail:   "direnv runs .envrc automatically when a shell enters the directory. Any shell command in .envrc executes without further confirmation.",
 	})
 
@@ -3988,7 +3988,7 @@ func scanEnvrc(path string) ([]Finding, error) {
 					Severity: Critical,
 					Module:   "devenv",
 					Path:     ".envrc",
-					Message:  fmt.Sprintf(".envrc line %d sets %s — overrides git configuration, bypassing all config-based protections", lineNum, varName),
+					Message:  fmt.Sprintf(".envrc line %d sets %s – overrides git configuration, bypassing all config-based protections", lineNum, varName),
 					Detail:   "GIT_CONFIG_COUNT/KEY/VALUE, GIT_CONFIG_GLOBAL, and GIT_CONFIG_SYSTEM environment variables override git config at all scopes, including git-protect's hardened global settings (core.hooksPath, core.fsmonitor, etc.).",
 				})
 				break
@@ -4030,7 +4030,7 @@ func isIDChar(ch rune) bool {
 		(ch >= '0' && ch <= '9') || ch == '_'
 }
 
-// truncate is defined in submodules.go — reuse from there (same package)
+// truncate is defined in submodules.go – reuse from there (same package)
 ```
 
 ### Step 4: Run tests to verify they pass
@@ -4291,7 +4291,7 @@ cd /home/moldabekov/Work/Projects/git/git-protect
 go test ./internal/scanner/ -run TestScripts -v 2>&1 | head -20
 ```
 
-Expected: compilation error — `NewScriptsModule` not defined.
+Expected: compilation error – `NewScriptsModule` not defined.
 
 ### Step 3: Implement the scripts scanner
 
@@ -4354,7 +4354,7 @@ type scriptPattern struct {
 
 // exfiltrationPatterns are the heuristic patterns checked on every scanned line.
 var exfiltrationPatterns = []scriptPattern{
-	// Network exfiltration — download and execute.
+	// Network exfiltration – download and execute.
 	{
 		label:   "curl pipe shell",
 		pattern: regexp.MustCompile(`curl\s[^|]*\|\s*(ba)?sh`),
@@ -4378,7 +4378,7 @@ var exfiltrationPatterns = []scriptPattern{
 	{
 		label:   "base64 decode pipe shell",
 		pattern: regexp.MustCompile(`base64\s+-d.*\|\s*(ba)?sh`),
-		detail:  "Decodes a base64-encoded payload and pipes it to a shell — classic obfuscation technique.",
+		detail:  "Decodes a base64-encoded payload and pipes it to a shell – classic obfuscation technique.",
 	},
 	{
 		label:   "python reverse shell socket",
@@ -4388,7 +4388,7 @@ var exfiltrationPatterns = []scriptPattern{
 	{
 		label:   "eval base64 decode (Python)",
 		pattern: regexp.MustCompile(`exec\s*\(\s*(__import__\s*\(\s*['"]base64['"]|base64\.b64decode)`),
-		detail:  "Executes base64-decoded payload via exec() — obfuscated code execution.",
+		detail:  "Executes base64-decoded payload via exec() – obfuscated code execution.",
 	},
 	// Credential access patterns.
 	{
@@ -4419,7 +4419,7 @@ var exfiltrationPatterns = []scriptPattern{
 	{
 		label:   "$GITHUB_TOKEN",
 		pattern: regexp.MustCompile(`\$GITHUB_TOKEN|\$\{GITHUB_TOKEN\}`),
-		detail:  "Reads GitHub personal access token from environment — can access private repos and Codespace secrets.",
+		detail:  "Reads GitHub personal access token from environment – can access private repos and Codespace secrets.",
 	},
 	{
 		label:   "$NPM_TOKEN",
@@ -4757,7 +4757,7 @@ cd /home/moldabekov/Work/Projects/git/git-protect
 go test ./internal/scanner/ -run TestBuildHooks -v 2>&1 | head -20
 ```
 
-Expected: compilation error — `NewBuildHooksModule` not defined.
+Expected: compilation error – `NewBuildHooksModule` not defined.
 
 ### Step 3: Implement the build hooks scanner
 
@@ -4812,13 +4812,13 @@ var setupPyDangerousPattern = regexp.MustCompile(`subprocess|os\.system`)
 func (m *BuildHooksModule) Scan(_ context.Context, sc ScanContext) ([]Finding, error) {
 	var findings []Finding
 
-	// package.json — npm lifecycle hooks.
+	// package.json – npm lifecycle hooks.
 	pkgJSON := filepath.Join(sc.RepoPath, "package.json")
 	if f, err := scanPackageJSON(pkgJSON, m.Name()); err == nil {
 		findings = append(findings, f...)
 	}
 
-	// Makefile — $(shell ...) invocations.
+	// Makefile – $(shell ...) invocations.
 	for _, makefileName := range []string{"Makefile", "makefile", "GNUmakefile"} {
 		makefilePath := filepath.Join(sc.RepoPath, makefileName)
 		if f, err := scanMakefile(makefilePath, m.Name()); err == nil {
@@ -4827,7 +4827,7 @@ func (m *BuildHooksModule) Scan(_ context.Context, sc ScanContext) ([]Finding, e
 		}
 	}
 
-	// setup.py — subprocess / os.system calls.
+	// setup.py – subprocess / os.system calls.
 	setupPy := filepath.Join(sc.RepoPath, "setup.py")
 	if f, err := scanSetupPy(setupPy, m.Name()); err == nil {
 		findings = append(findings, f...)
@@ -4930,7 +4930,7 @@ func scanSetupPy(path, moduleName string) ([]Finding, error) {
 		Severity: Medium,
 		Module:   moduleName,
 		Path:     "setup.py",
-		Message:  fmt.Sprintf("setup.py line %d: subprocess/shell call — %s", matchLine, truncate(matchText, 80)),
+		Message:  fmt.Sprintf("setup.py line %d: subprocess/shell call – %s", matchLine, truncate(matchText, 80)),
 		Detail:   "setup.py is executed by pip during 'pip install .' or 'python setup.py install'. Shell command calls in setup.py execute on the developer's machine with their full permissions.",
 	}}, nil
 }
@@ -4983,7 +4983,7 @@ import (
 
 func TestUnicode_CleanFile(t *testing.T) {
 	dir := t.TempDir()
-	// Pure ASCII Go source — no BiDi characters.
+	// Pure ASCII Go source – no BiDi characters.
 	src := "package main\n\nimport \"fmt\"\n\nfunc main() {\n\tfmt.Println(\"Hello, World!\")\n}\n"
 	if err := os.WriteFile(filepath.Join(dir, "main.go"), []byte(src), 0644); err != nil {
 		t.Fatal(err)
@@ -5001,7 +5001,7 @@ func TestUnicode_CleanFile(t *testing.T) {
 
 func TestUnicode_BiDiCharInGoFile(t *testing.T) {
 	dir := t.TempDir()
-	// Embed U+202E (RIGHT-TO-LEFT OVERRIDE) — the core Trojan Source character.
+	// Embed U+202E (RIGHT-TO-LEFT OVERRIDE) – the core Trojan Source character.
 	// UTF-8 encoding: 0xE2 0x80 0xAE
 	src := "package main\n\n// access check: \xe2\x80\xae bypass if admin\nfunc isAllowed() bool { return true }\n"
 	if err := os.WriteFile(filepath.Join(dir, "auth.go"), []byte(src), 0644); err != nil {
@@ -5023,7 +5023,7 @@ func TestUnicode_BiDiCharInGoFile(t *testing.T) {
 
 func TestUnicode_BiDiCharInPythonFile(t *testing.T) {
 	dir := t.TempDir()
-	// U+200F (RIGHT-TO-LEFT MARK) — UTF-8: 0xE2 0x80 0x8F
+	// U+200F (RIGHT-TO-LEFT MARK) – UTF-8: 0xE2 0x80 0x8F
 	src := "def check_admin(user):\n    # \xe2\x80\x8f admin check\n    return user == 'admin'\n"
 	if err := os.WriteFile(filepath.Join(dir, "auth.py"), []byte(src), 0644); err != nil {
 		t.Fatal(err)
@@ -5041,7 +5041,7 @@ func TestUnicode_BiDiCharInPythonFile(t *testing.T) {
 
 func TestUnicode_BiDiIsolate(t *testing.T) {
 	dir := t.TempDir()
-	// U+2066 (LEFT-TO-RIGHT ISOLATE) — UTF-8: 0xE2 0x81 0xA6
+	// U+2066 (LEFT-TO-RIGHT ISOLATE) – UTF-8: 0xE2 0x81 0xA6
 	src := "function validate(input) {\n  // \xe2\x81\xa6 safe check\n  return input.length > 0;\n}\n"
 	if err := os.WriteFile(filepath.Join(dir, "validate.js"), []byte(src), 0644); err != nil {
 		t.Fatal(err)
@@ -5063,7 +5063,7 @@ func TestUnicode_SkipsNodeModules(t *testing.T) {
 	if err := os.MkdirAll(nmDir, 0755); err != nil {
 		t.Fatal(err)
 	}
-	// U+202E inside node_modules — should be skipped.
+	// U+202E inside node_modules – should be skipped.
 	src := "// \xe2\x80\xae evil\nmodule.exports = {};\n"
 	if err := os.WriteFile(filepath.Join(nmDir, "index.js"), []byte(src), 0644); err != nil {
 		t.Fatal(err)
@@ -5104,7 +5104,7 @@ func TestUnicode_SkipsLargeFiles(t *testing.T) {
 
 func TestUnicode_NonSourceFileSkipped(t *testing.T) {
 	dir := t.TempDir()
-	// A Markdown file with a BiDi char — not in the scanned extension list.
+	// A Markdown file with a BiDi char – not in the scanned extension list.
 	content := "# README\nThis is \xe2\x80\xae safe.\n"
 	if err := os.WriteFile(filepath.Join(dir, "README.md"), []byte(content), 0644); err != nil {
 		t.Fatal(err)
@@ -5135,7 +5135,7 @@ cd /home/moldabekov/Work/Projects/git/git-protect
 go test ./internal/scanner/ -run TestUnicode -v 2>&1 | head -20
 ```
 
-Expected: compilation error — `NewUnicodeModule` not defined.
+Expected: compilation error – `NewUnicodeModule` not defined.
 
 ### Step 3: Implement the unicode scanner
 
@@ -5170,7 +5170,7 @@ func NewUnicodeModule() *UnicodeModule {
 func (m *UnicodeModule) Name() string { return "unicode" }
 
 // unicodeSourceExtensions is the set of file extensions that will be scanned.
-// We limit to compiled/interpreted source — not prose documents where BiDi might
+// We limit to compiled/interpreted source – not prose documents where BiDi might
 // appear legitimately (e.g., Arabic/Hebrew README files).
 var unicodeSourceExtensions = map[string]bool{
 	".go":    true,
@@ -5537,7 +5537,7 @@ cd /home/moldabekov/Work/Projects/git/git-protect
 go test ./internal/scanner/ -run TestPipelines -v 2>&1 | head -20
 ```
 
-Expected: compilation error — `NewPipelinesModule` not defined.
+Expected: compilation error – `NewPipelinesModule` not defined.
 
 ### Step 3: Implement the CI pipelines scanner
 
@@ -5581,17 +5581,17 @@ var ciSuspiciousPatterns = []pipelinePattern{
 	{
 		label:   "curl pipe shell",
 		pattern: regexp.MustCompile(`curl\s[^|]*\|\s*(ba)?sh`),
-		detail:  "Downloads and pipes to a shell in CI — can exfiltrate CI secrets (GITHUB_TOKEN, repository secrets) to an external server.",
+		detail:  "Downloads and pipes to a shell in CI – can exfiltrate CI secrets (GITHUB_TOKEN, repository secrets) to an external server.",
 	},
 	{
 		label:   "wget pipe shell",
 		pattern: regexp.MustCompile(`wget\s[^|]*\|\s*(ba)?sh`),
-		detail:  "Downloads and pipes to a shell in CI — can exfiltrate CI secrets to an external server.",
+		detail:  "Downloads and pipes to a shell in CI – can exfiltrate CI secrets to an external server.",
 	},
 	{
 		label:   "base64 decode pipe shell",
 		pattern: regexp.MustCompile(`base64\s+-d.*\|\s*(ba)?sh`),
-		detail:  "Decodes a base64-encoded payload and executes it in CI — obfuscated command execution.",
+		detail:  "Decodes a base64-encoded payload and executes it in CI – obfuscated command execution.",
 	},
 	{
 		label:   "/dev/tcp in CI",
@@ -5769,7 +5769,7 @@ package scanner
 func DefaultEngine() *Engine {
 	e := NewEngine()
 
-	// Critical severity modules — registered first so they appear first in output.
+	// Critical severity modules – registered first so they appear first in output.
 	e.Register(NewHooksModule())
 	e.Register(NewConfigModule())
 	e.Register(NewConfigIncludeModule())
@@ -6042,7 +6042,7 @@ func TestNormalize(t *testing.T) {
 			want:   "github.com/org/repo",
 			wantOK: true,
 		},
-		// Local paths — must return false
+		// Local paths – must return false
 		{
 			name:   "file:// scheme",
 			input:  "file:///home/user/repo",
@@ -6186,10 +6186,10 @@ func (s *Store) Load() ([]Entry, error) {
 		return nil, fmt.Errorf("trust store stat: %w", err)
 	}
 	if info.Mode()&os.ModeSymlink != 0 {
-		return nil, fmt.Errorf("trust store %q is a symlink — refusing to load (security policy)", s.path)
+		return nil, fmt.Errorf("trust store %q is a symlink – refusing to load (security policy)", s.path)
 	}
 	if info.Mode().Perm() != 0600 {
-		return nil, fmt.Errorf("trust store %q has unsafe permissions %04o — expected 0600", s.path, info.Mode().Perm())
+		return nil, fmt.Errorf("trust store %q has unsafe permissions %04o – expected 0600", s.path, info.Mode().Perm())
 	}
 
 	data, err := os.ReadFile(s.path)
@@ -6292,7 +6292,7 @@ func (s *Store) save(entries []Entry) error {
 func (s *Store) IsTrusted(rawURL string) (bool, error) {
 	norm, ok := Normalize(rawURL)
 	if !ok {
-		// Local path — never trusted
+		// Local path – never trusted
 		return false, nil
 	}
 	entries, err := s.Load()
@@ -6401,7 +6401,7 @@ func TestStoreAddListRemove(t *testing.T) {
 		t.Errorf("pattern = %q, want %q", entries[0].Pattern, "github.com/myorg/*")
 	}
 
-	// Add duplicate — should be idempotent
+	// Add duplicate – should be idempotent
 	err = s.Add(trust.Entry{Pattern: "github.com/myorg/*", Type: "org"})
 	if err != nil {
 		t.Fatalf("Add duplicate: %v", err)
@@ -6839,7 +6839,7 @@ type ConfigEntry struct {
 }
 
 // HardeningEntries returns the six config entries that git-protect install applies.
-// This list is the authoritative definition — install, uninstall, and status
+// This list is the authoritative definition – install, uninstall, and status
 // all derive from it.
 func HardeningEntries() []ConfigEntry {
 	return []ConfigEntry{
@@ -6898,7 +6898,7 @@ func GetGlobal(key string) (string, error) {
 	cmd := exec.Command("git", "config", "--global", "--get", key)
 	out, err := cmd.Output()
 	if err != nil {
-		// exit status 1 means "key not found" — not an error for our purposes
+		// exit status 1 means "key not found" – not an error for our purposes
 		if exitErr, ok := err.(*exec.ExitError); ok && exitErr.ExitCode() == 1 {
 			return "", nil
 		}
@@ -6914,7 +6914,7 @@ func UnsetGlobal(key string) error {
 	out, err := cmd.CombinedOutput()
 	if err != nil {
 		if exitErr, ok := err.(*exec.ExitError); ok && exitErr.ExitCode() == 5 {
-			// exit 5 = "key not found" — idempotent OK
+			// exit 5 = "key not found" – idempotent OK
 			return nil
 		}
 		return fmt.Errorf("git config --global --unset %s: %w\n%s", key, err, strings.TrimSpace(string(out)))
@@ -7049,7 +7049,7 @@ exec "%s" scan --hook-mode "$@"
 
 // Install creates the hooks directory and writes post-checkout, post-merge,
 // and post-rewrite hook scripts. Each script is set executable (0755).
-// Install is idempotent — running it again overwrites existing hook files.
+// Install is idempotent – running it again overwrites existing hook files.
 func Install(hooksDir, binaryPath string) error {
 	if err := os.MkdirAll(hooksDir, 0755); err != nil {
 		return fmt.Errorf("hooks: create directory %q: %w", hooksDir, err)
@@ -7269,7 +7269,7 @@ type ScanFunc func(ctx context.Context, repoPath string, preCheckout bool) (scan
 func BuildCloneArgs(url, dir string, extraArgs []string) []string {
 	args := []string{"clone", "--no-checkout"}
 	for _, a := range extraArgs {
-		// Strip submodule recursion — git-protect handles it separately
+		// Strip submodule recursion – git-protect handles it separately
 		if a == "--recurse-submodules" || strings.HasPrefix(a, "--recurse-submodules=") {
 			continue
 		}
@@ -7568,9 +7568,9 @@ func buildRoot() *cobra.Command {
 		Long: `git-protect scans git repositories for attack patterns before they can execute.
 
 It provides three defense layers:
-  1. Safe clone wrapper (git-protect clone) — primary defense, blocks before checkout
-  2. Global git hooks — secondary defense, warns on every checkout
-  3. Git config hardening — best-effort fallback`,
+  1. Safe clone wrapper (git-protect clone) – primary defense, blocks before checkout
+  2. Global git hooks – secondary defense, warns on every checkout
+  3. Git config hardening – best-effort fallback`,
 		SilenceUsage:  true,
 		SilenceErrors: true,
 	}
@@ -7643,7 +7643,7 @@ func checkForUpdate(w io.Writer, currentVersion string) {
 	latest := strings.TrimPrefix(release.TagName, "v")
 	current := strings.TrimPrefix(currentVersion, "v")
 	if latest != "" && latest != current && latest != "dev" {
-		fmt.Fprintf(w, "Latest: %s — update available at %s\n", release.TagName, release.HTMLURL)
+		fmt.Fprintf(w, "Latest: %s – update available at %s\n", release.TagName, release.HTMLURL)
 	}
 }
 
@@ -7768,7 +7768,7 @@ func buildInstallCmd() *cobra.Command {
 			trustPath := paths.TrustStorePath()
 
 			if dryRun {
-				fmt.Fprintln(os.Stdout, "Dry run — no changes will be made.\n")
+				fmt.Fprintln(os.Stdout, "Dry run – no changes will be made.\n")
 			}
 
 			// Check for existing core.hooksPath (conflict detection)
@@ -7831,7 +7831,7 @@ func buildInstallCmd() *cobra.Command {
 				// Touch the trust store file if it doesn't exist
 				if _, err := os.Stat(trustPath); os.IsNotExist(err) {
 					if err := store.Add(trust.Entry{}); err != nil {
-						// Ignore error from adding empty entry — file creation is the goal
+						// Ignore error from adding empty entry – file creation is the goal
 						_ = err
 					}
 					// Remove the empty entry
@@ -8334,7 +8334,7 @@ func buildStatusCmd() *cobra.Command {
 			safeDirVal, _ := gitcfg.GetGlobal("safe.directory")
 			if safeDirVal == "*" {
 				fmt.Fprintln(os.Stdout, "\n  Warnings:")
-				fmt.Fprintln(os.Stdout, "    safe.directory = *    UNSAFE — accepts repos owned by other users")
+				fmt.Fprintln(os.Stdout, "    safe.directory = *    UNSAFE – accepts repos owned by other users")
 			}
 
 			// Trust store
@@ -8469,7 +8469,7 @@ func TestClone_MaliciousConfig(t *testing.T) {
 
 	// Expect non-zero exit (blocked)
 	if err == nil {
-		// Clone succeeded — this is the failure case
+		// Clone succeeded – this is the failure case
 		t.Fatalf("Expected git-protect clone to block malicious repo, but it succeeded.\nOutput:\n%s", output)
 	}
 
@@ -8549,7 +8549,7 @@ func TestScan_MaliciousPackageJSON(t *testing.T) {
 	runGit(t, repoDir, "add", ".")
 	runGit(t, repoDir, "commit", "-m", "add package.json")
 
-	// Run scan — expect no error exit (MEDIUM does not block by default)
+	// Run scan – expect no error exit (MEDIUM does not block by default)
 	cmd := exec.Command(bin, "scan", "--severity", "medium", repoDir)
 	out, _ := cmd.CombinedOutput()
 	output := string(out)
@@ -8902,12 +8902,12 @@ require (
 )
 ```
 
-If `golang.org/x/net` is unavailable or undesirable, the IDN normalization in `url.go` can be made optional with a build tag or stubbed out with a no-op that only lowercases the host — this trades security (homograph protection) for zero external dependencies. The stub replacement for the `idna` block:
+If `golang.org/x/net` is unavailable or undesirable, the IDN normalization in `url.go` can be made optional with a build tag or stubbed out with a no-op that only lowercases the host – this trades security (homograph protection) for zero external dependencies. The stub replacement for the `idna` block:
 
 ```go
-// Stub without x/net/idna — lowercase only, no punycode normalization.
+// Stub without x/net/idna – lowercase only, no punycode normalization.
 // Replace the idna.Lookup.ToASCII block with:
-// (nothing — ToLower above is sufficient for ASCII-only hosts)
+// (nothing – ToLower above is sufficient for ASCII-only hosts)
 ```
 
 ---
@@ -8916,7 +8916,7 @@ If `golang.org/x/net` is unavailable or undesirable, the IDN normalization in `u
 
 ### Module registration
 
-`allModules()` in `cmd/git-protect/main.go` uses factory functions (`scanner.NewHooksModule()`, etc.) — works regardless of whether struct types are exported or unexported.
+`allModules()` in `cmd/git-protect/main.go` uses factory functions (`scanner.NewHooksModule()`, etc.) – works regardless of whether struct types are exported or unexported.
 
 ### Trust store path helpers
 
@@ -8932,12 +8932,12 @@ If `golang.org/x/net` is unavailable or undesirable, the IDN normalization in `u
 ### Coverage target
 
 To reach 80%+ coverage across Tasks 15-24:
-- `internal/trust/` — url_test.go + store_test.go + match_test.go cover all exported functions
-- `internal/output/` — report_test.go covers both RenderText and RenderJSON with all code paths
-- `internal/gitcfg/` — hardening_test.go covers HardeningEntries; SetGlobal/GetGlobal/UnsetGlobal require git in PATH (they are tested indirectly by integration tests)
-- `internal/hooks/` — manager_test.go covers Install, Uninstall, HookNames
-- `internal/clone/` — engine_test.go covers BuildCloneArgs and DetectGitBin; Execute is covered by integration tests
-- `cmd/git-protect/` — covered by integration tests; parseSeverity and individual command flags are exercised by TestScan_* tests
+- `internal/trust/` – url_test.go + store_test.go + match_test.go cover all exported functions
+- `internal/output/` – report_test.go covers both RenderText and RenderJSON with all code paths
+- `internal/gitcfg/` – hardening_test.go covers HardeningEntries; SetGlobal/GetGlobal/UnsetGlobal require git in PATH (they are tested indirectly by integration tests)
+- `internal/hooks/` – manager_test.go covers Install, Uninstall, HookNames
+- `internal/clone/` – engine_test.go covers BuildCloneArgs and DetectGitBin; Execute is covered by integration tests
+- `cmd/git-protect/` – covered by integration tests; parseSeverity and individual command flags are exercised by TestScan_* tests
 
 Modules from Tasks 1-14 bring the bulk of coverage. Tasks 15-24 add approximately 15-20% additional coverage.
 ```

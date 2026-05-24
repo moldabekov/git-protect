@@ -80,12 +80,12 @@ var exfiltrationPatterns = []scriptPattern{
 	{
 		label:   "base64 decode pipe shell",
 		pattern: regexp.MustCompile(`base64\s+-d.*\|\s*(ba)?sh`),
-		detail:  "Decodes a base64-encoded payload and pipes it to a shell — classic obfuscation technique.",
+		detail:  "Decodes a base64-encoded payload and pipes it to a shell – classic obfuscation technique.",
 	},
 	{
 		label:   "eval base64 decode (Python)",
 		pattern: regexp.MustCompile(`exec\s*\(\s*(__import__\s*\(\s*['"]base64['"]|base64\.b64decode)`),
-		detail:  "Executes base64-decoded payload via exec() — obfuscated code execution.",
+		detail:  "Executes base64-decoded payload via exec() – obfuscated code execution.",
 	},
 	// Credential access patterns.
 	{

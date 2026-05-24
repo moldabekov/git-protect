@@ -22,7 +22,7 @@ exec "%s" scan --hook-mode "$@"
 
 // Install creates the hooks directory and writes post-checkout, post-merge,
 // and post-rewrite hook scripts. Each script is set executable (0755).
-// Install is idempotent — running it again overwrites existing hook files.
+// Install is idempotent – running it again overwrites existing hook files.
 func Install(hooksDir, binaryPath string) error {
 	if err := os.MkdirAll(hooksDir, 0755); err != nil {
 		return fmt.Errorf("hooks: create directory %q: %w", hooksDir, err)

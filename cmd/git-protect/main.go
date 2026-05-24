@@ -73,9 +73,9 @@ func buildRoot() *cobra.Command {
 		Long: `git-protect scans git repositories for attack patterns before they can execute.
 
 It provides three defense layers:
-  1. Safe clone wrapper (git-protect clone) — primary defense, blocks before checkout
-  2. Global git hooks — secondary defense, warns on every checkout
-  3. Git config hardening — best-effort fallback`,
+  1. Safe clone wrapper (git-protect clone) – primary defense, blocks before checkout
+  2. Global git hooks – secondary defense, warns on every checkout
+  3. Git config hardening – best-effort fallback`,
 		SilenceUsage:  true,
 		SilenceErrors: true,
 	}
@@ -149,7 +149,7 @@ func checkForUpdate(w io.Writer, currentVersion string) {
 	latest := strings.TrimPrefix(release.TagName, "v")
 	current := strings.TrimPrefix(currentVersion, "v")
 	if latest != "" && latest != current && latest != "dev" {
-		fmt.Fprintf(w, "Latest: %s — update available at %s\n", release.TagName, release.HTMLURL)
+		fmt.Fprintf(w, "Latest: %s – update available at %s\n", release.TagName, release.HTMLURL)
 	}
 }
 
@@ -281,7 +281,7 @@ func buildInstallCmd() *cobra.Command {
 			trustPath := paths.TrustStorePath()
 
 			if dryRun {
-				fmt.Fprintln(os.Stdout, "Dry run — no changes will be made.")
+				fmt.Fprintln(os.Stdout, "Dry run – no changes will be made.")
 				fmt.Fprintln(os.Stdout)
 			}
 
@@ -865,7 +865,7 @@ func buildStatusCmd() *cobra.Command {
 			safeDirVal, _ := gitcfg.GetGlobal("safe.directory")
 			if safeDirVal == "*" {
 				fmt.Fprintln(os.Stdout, "\n  Warnings:")
-				fmt.Fprintln(os.Stdout, "    safe.directory = *    UNSAFE — accepts repos owned by other users")
+				fmt.Fprintln(os.Stdout, "    safe.directory = *    UNSAFE – accepts repos owned by other users")
 			}
 
 			// Trust store

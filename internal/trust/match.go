@@ -16,9 +16,9 @@ func MatchAny(normalizedURL string, entries []Entry) bool {
 //
 // Pattern types (inferred from the pattern string itself):
 //
-//   - Exact match:   "github.com/org/repo"   — matches only that repo
-//   - Org wildcard:  "github.com/org/*"       — matches any repo under org
-//   - Host wildcard: "github.com/*"           — matches all repos on host
+//   - Exact match:   "github.com/org/repo"   – matches only that repo
+//   - Org wildcard:  "github.com/org/*"       – matches any repo under org
+//   - Host wildcard: "github.com/*"           – matches all repos on host
 //
 // Both normalizedURL and pattern are already normalized (lowercase, no scheme,
 // no .git suffix). The function is case-insensitive as an additional safety net.

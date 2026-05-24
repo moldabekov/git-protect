@@ -35,17 +35,17 @@ var ciSuspiciousPatterns = []pipelinePattern{
 	{
 		label:   "curl pipe shell",
 		pattern: regexp.MustCompile(`curl\s[^|]*\|\s*(ba)?sh`),
-		detail:  "Downloads and pipes to a shell in CI — can exfiltrate CI secrets (GITHUB_TOKEN, repository secrets) to an external server.",
+		detail:  "Downloads and pipes to a shell in CI – can exfiltrate CI secrets (GITHUB_TOKEN, repository secrets) to an external server.",
 	},
 	{
 		label:   "wget pipe shell",
 		pattern: regexp.MustCompile(`wget\s[^|]*\|\s*(ba)?sh`),
-		detail:  "Downloads and pipes to a shell in CI — can exfiltrate CI secrets to an external server.",
+		detail:  "Downloads and pipes to a shell in CI – can exfiltrate CI secrets to an external server.",
 	},
 	{
 		label:   "base64 decode pipe shell",
 		pattern: regexp.MustCompile(`base64\s+-d.*\|\s*(ba)?sh`),
-		detail:  "Decodes a base64-encoded payload and executes it in CI — obfuscated command execution.",
+		detail:  "Decodes a base64-encoded payload and executes it in CI – obfuscated command execution.",
 	},
 	{
 		label:   "/dev/tcp in CI",

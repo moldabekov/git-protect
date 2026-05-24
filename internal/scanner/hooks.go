@@ -9,7 +9,7 @@ import (
 )
 
 // hooksModule scans .git/hooks/ for executable files that are not .sample stubs.
-// Any executable hook in a freshly cloned repo is suspicious — git does not
+// Any executable hook in a freshly cloned repo is suspicious – git does not
 // install executable hooks from a remote; they come only from init.templateDir.
 type hooksModule struct{}
 

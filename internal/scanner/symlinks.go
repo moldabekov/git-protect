@@ -10,7 +10,7 @@ import (
 )
 
 // symlinksModule detects symlinks whose resolved target escapes the repository tree.
-// Severity: HIGH — can expose sensitive host files when the repo is opened in an IDE
+// Severity: HIGH – can expose sensitive host files when the repo is opened in an IDE
 // or archive tool that follows symlinks transparently.
 type symlinksModule struct{}
 
@@ -41,7 +41,7 @@ func (m *symlinksModule) Scan(_ context.Context, sc ScanContext) ([]Finding, err
 			return nil
 		}
 
-		// Skip the .git directory entirely — git manages its own internals.
+		// Skip the .git directory entirely – git manages its own internals.
 		if d.IsDir() && d.Name() == ".git" {
 			return filepath.SkipDir
 		}
@@ -53,7 +53,7 @@ func (m *symlinksModule) Scan(_ context.Context, sc ScanContext) ([]Finding, err
 
 		resolved, resolveErr := filepath.EvalSymlinks(path)
 		if resolveErr != nil {
-			// Broken symlink — read the raw link target and check it lexically.
+			// Broken symlink – read the raw link target and check it lexically.
 			rawTarget, linkErr := os.Readlink(path)
 			if linkErr != nil {
 				return nil // Cannot inspect; skip.

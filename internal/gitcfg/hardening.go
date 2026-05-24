@@ -15,7 +15,7 @@ type ConfigEntry struct {
 }
 
 // HardeningEntries returns the six config entries that git-protect install applies.
-// This list is the authoritative definition — install, uninstall, and status
+// This list is the authoritative definition – install, uninstall, and status
 // all derive from it.
 func HardeningEntries() []ConfigEntry {
 	return []ConfigEntry{
@@ -74,7 +74,7 @@ func GetGlobal(key string) (string, error) {
 	cmd := exec.Command("git", "config", "--global", "--get", key)
 	out, err := cmd.Output()
 	if err != nil {
-		// exit status 1 means "key not found" — not an error for our purposes
+		// exit status 1 means "key not found" – not an error for our purposes
 		if exitErr, ok := err.(*exec.ExitError); ok && exitErr.ExitCode() == 1 {
 			return "", nil
 		}
@@ -90,7 +90,7 @@ func UnsetGlobal(key string) error {
 	out, err := cmd.CombinedOutput()
 	if err != nil {
 		if exitErr, ok := err.(*exec.ExitError); ok && exitErr.ExitCode() == 5 {
-			// exit 5 = "key not found" — idempotent OK
+			// exit 5 = "key not found" – idempotent OK
 			return nil
 		}
 		return fmt.Errorf("git config --global --unset %s: %w\n%s", key, err, strings.TrimSpace(string(out)))

@@ -135,7 +135,7 @@ func parseGitmodules(r io.Reader, relPath string) ([]Finding, error) {
 func checkSubmodule(e *submoduleEntry, relPath string) []Finding {
 	var findings []Finding
 
-	// 1. ext:: protocol URL — arbitrary shell command execution via git-remote-ext.
+	// 1. ext:: protocol URL – arbitrary shell command execution via git-remote-ext.
 	if strings.HasPrefix(e.url, "ext::") {
 		findings = append(findings, Finding{
 			Severity: Critical,
